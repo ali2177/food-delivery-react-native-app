@@ -1,13 +1,16 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { pallete } from "../theme";
+import { useNavigation } from "@react-navigation/native";
 
 const CartIcon = () => {
+  const navigation = useNavigation();
   return (
     <View className="absolute bottom-5 w-full z-50">
       <TouchableOpacity
         style={{ backgroundColor: pallete.bgColor(1) }}
         className="flex-row justify-between items-center mx-5 rounded-full p-4 py-3 shadow-lg"
+        onPress={() => navigation.navigate("Cart")}
       >
         <View
           className="p-2 px-4 rounded-full"
