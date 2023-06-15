@@ -4,9 +4,13 @@ import * as Icon from "react-native-feather";
 import React from "react";
 import { featured } from "../constans";
 import { pallete } from "../theme";
+import { useDispatch, useSelector } from "react-redux";
+import { selectRestaurant } from "../slices/restaurantSlice";
+import { emptyCart } from "../slices/cartSlice";
 
 const DeliveryScreen = ({ navigation }) => {
-  const restaurant = featured.restaurants[0];
+  const restaurant = useSelector(selectRestaurant);
+  const dispatch = useDispatch();
   return (
     <View className="flex-1">
       {/* map view */}
@@ -78,7 +82,10 @@ const DeliveryScreen = ({ navigation }) => {
 
             <TouchableOpacity
               className="bg-white p-2 rounded-full"
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => {
+                navigation.navigate("Home");
+                dispatch(emptyCart());
+              }}
             >
               <Icon.X stroke={"red"} strokeWidth="5" />
             </TouchableOpacity>

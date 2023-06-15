@@ -2,8 +2,25 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { pallete } from "../theme";
 import * as Icon from "react-native-feather";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  removeFromCart,
+  selectCartItemsByID,
+  selectCartTotal,
+} from "../slices/cartSlice";
 
 const DishRow = ({ item }) => {
+  const dispatch = useDispatch();
+  const totalItems = useSelector((state) =>
+    selectCartItemsByID(state, item.id)
+  );
+  const increaseHandle = () => {
+    dispatch(addToCart({ ...item }));
+  };
+  const decreaseHandle = () => {
+    dispatch(removeFromCart(item));
+  };
   return (
     <View className="flex-row items-center bg-white p-3 rounded-3xl shadow-2xl mb-3 mx-2">
       <Image
@@ -24,6 +41,8 @@ const DishRow = ({ item }) => {
             <TouchableOpacity
               className="p-1 rounded-full"
               style={{ backgroundColor: pallete.bgColor(1) }}
+              onPress={decreaseHandle}
+              disabled={!totalItems.length}
             >
               <Icon.Minus
                 strokeWidth={2}
@@ -32,10 +51,11 @@ const DishRow = ({ item }) => {
                 stroke={"white"}
               />
             </TouchableOpacity>
-            <Text className="px-3">2</Text>
+            <Text className="px-3">{totalItems.length}</Text>
             <TouchableOpacity
               className="p-1 rounded-full"
               style={{ backgroundColor: pallete.bgColor(1) }}
+              onPress={increaseHandle}
             >
               <Icon.Plus
                 strokeWidth={2}
